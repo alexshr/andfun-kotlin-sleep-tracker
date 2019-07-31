@@ -21,9 +21,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.formatNights
+import com.hadilq.liveevent.LiveEvent
 import kotlinx.coroutines.*
 
 /**
@@ -83,17 +85,15 @@ class SleepTrackerViewModel(
     }
 
     /**
-     * Request a toast by setting this value to true.
-     *
+     * Request a snackbar by setting this value to true.
+     * (see https://github.com/hadilq/LiveEvent)
      * This is private because we don't want to expose setting this value to the Fragment.
      */
-    private var _showSnackbarEvent = MutableLiveData<Boolean>()
 
-    /**
-     * If this is true, immediately `show()` a toast and call `doneShowingSnackbar()`.
-     */
-    val showSnackBarEvent: LiveData<Boolean>
-        get() = _showSnackbarEvent
+    private val snackBarEvent = LiveEvent<String>()
+    val showSnackBarEvent: LiveData<String> = snackBarEvent
+
+
 
     /**
      * Variable that tells the Fragment to navigate to a specific [SleepQualityFragment]
@@ -102,16 +102,7 @@ class SleepTrackerViewModel(
      */
 
     private val _navigateToSleepQuality = MutableLiveData<SleepNight>()
-    /**
-     * Call this immediately after calling `show()` on a toast.
-     *
-     * It will clear the toast request, so if the user rotates their phone it won't show a duplicate
-     * toast.
-     */
 
-    fun doneShowingSnackbar() {
-        _showSnackbarEvent.value = false
-    }
     /**
      * If this is non-null, immediately navigate to [SleepQualityFragment] and call [doneNavigating]
      */
@@ -222,7 +213,8 @@ class SleepTrackerViewModel(
         }
 
         // Show a snackbar message, because it's friendly.
-        _showSnackbarEvent.value = true
+        snackBarEvent.value = getApplication<Application>().getString(R.string.cleared_message)
+
     }
 
     /**
