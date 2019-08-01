@@ -62,7 +62,13 @@ dependencies {
     // Room and Lifecycle dependencies
     implementation "androidx.room:room-runtime:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
-    implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+
+    //LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata:$version_lifecycle"
+
+    //ViewModel ktx
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0-rc01"
+
 
     //https://github.com/hadilq/LiveEvent
     implementation "com.github.hadilq.liveevent:liveevent:1.0.1"
