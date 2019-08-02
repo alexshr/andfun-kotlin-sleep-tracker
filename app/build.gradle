@@ -60,8 +60,14 @@ dependencies {
     implementation "org.jetbrains.anko:anko-design:$version_anko" // For SnackBars
 
     // Room and Lifecycle dependencies
+
+    //room
     implementation "androidx.room:room-runtime:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
+
+    //room ktx
+    implementation "androidx.room:room-ktx:$version_room"
+
 
     //LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:$version_lifecycle"

@@ -146,24 +146,6 @@ class SleepTrackerViewModel(
         }
     }
 
-    private suspend fun clear() {
-        withContext(Dispatchers.IO) {
-            database.clear()
-        }
-    }
-
-    private suspend fun update(night: SleepNight) {
-        withContext(Dispatchers.IO) {
-            database.update(night)
-        }
-    }
-
-    private suspend fun insert(night: SleepNight) {
-        withContext(Dispatchers.IO) {
-            database.insert(night)
-        }
-    }
-
     /**
      * Executes when the START button is clicked.
      */
@@ -173,7 +155,9 @@ class SleepTrackerViewModel(
             // and insert it into the database.
             val newNight = SleepNight()
 
-            insert(newNight)
+            withContext(Dispatchers.IO) {
+                database.insert(newNight)
+            }
 
             tonight.value = getTonightFromDatabase()
         }
@@ -193,8 +177,9 @@ class SleepTrackerViewModel(
             // Update the night in the database to add the end time.
             oldNight.endTimeMilli = System.currentTimeMillis()
 
-            update(oldNight)
-
+            withContext(Dispatchers.IO) {
+                database.update(oldNight)
+            }
             // Set state to navigate to the SleepQualityFragment.
             _navigateToSleepQuality.value = oldNight
         }
@@ -206,7 +191,9 @@ class SleepTrackerViewModel(
     fun onClear() {
         viewModelScope.launch {
             // Clear the database table.
-            clear()
+            withContext(Dispatchers.IO) {
+                database.clear()
+            }
 
             // And clear tonight since it's no longer in the database
             tonight.value = null
